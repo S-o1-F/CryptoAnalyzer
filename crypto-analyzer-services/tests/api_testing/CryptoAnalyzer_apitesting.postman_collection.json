@@ -1,0 +1,356 @@
+{
+  "info": {
+    "_postman_id": "96f9590a-63b8-4161-ac26-d62693a8e30d",
+    "name": "CryptoAnalyzer_skit_apitesting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54759043",
+    "_collection_link": "https://go.postman.co/collection/54759043-96f9590a-63b8-4161-ac26-d62693a8e30d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET all symbols",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "\r",
+              "pm.test(\"Response is an array\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time under 2000ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each symbol has required fields\", () => {\r",
+              "    const json = pm.response.json();\r",
+              "    if (json.length > 0) {\r",
+              "        pm.expect(json[0]).to.have.property(\"symbol\");\r",
+              "        pm.expect(json[0]).to.have.property(\"base\");\r",
+              "        pm.expect(json[0]).to.have.property(\"quote\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/symbols",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "symbols"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET latest price",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Has OHLCV fields\", () => {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.have.property(\"open\");\r",
+              "    pm.expect(json).to.have.property(\"high\");\r",
+              "    pm.expect(json).to.have.property(\"low\");\r",
+              "    pm.expect(json).to.have.property(\"close\");\r",
+              "    pm.expect(json).to.have.property(\"volume\");\r",
+              "});\r",
+              "pm.test(\"Close price is a positive number\", () => {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.close).to.be.a(\"number\").and.above(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/symbols/{{symbol}}/latest",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "symbols",
+            "{{symbol}}",
+            "latest"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Technical analysis",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});\r",
+              "pm.test(\"Response time under 3000ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/analysis/{{symbol}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "analysis",
+            "{{symbol}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET multi indictor analysis",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/analysis/{{symbol}}/multi",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "analysis",
+            "{{symbol}}",
+            "multi"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET price history",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an array\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+              "});\r",
+              "pm.test(\"History has data points\", () => {\r",
+              "    pm.expect(pm.response.json().length).to.be.above(0);\r",
+              "});\r",
+              "pm.test(\"First entry has OHLCV fields\", () => {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json[0]).to.have.property(\"open\");\r",
+              "    pm.expect(json[0]).to.have.property(\"close\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/crypto/{{symbol}}/history",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "crypto",
+            "{{symbol}}",
+            "history"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET on-chain metrics",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/onchain/{{symbol}}/metrics",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "onchain",
+            "{{symbol}}",
+            "metrics"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET active address",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/onchain/{{symbol}}/active-addresses",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "onchain",
+            "{{symbol}}",
+            "active-addresses"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET transactions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/onchain/{{symbol}}/transactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "onchain",
+            "{{symbol}}",
+            "transactions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET sentiment analysis",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an(\"object\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/sentiment/{{symbol}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sentiment",
+            "{{symbol}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
