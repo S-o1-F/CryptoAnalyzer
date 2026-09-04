@@ -5,11 +5,6 @@ from unittest.mock import patch, MagicMock
 from fastapi import HTTPException
 import requests
 
-sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '../..')))
-
-
-
 #za analysis service
 
 def test_analysis_service_returns_data():
