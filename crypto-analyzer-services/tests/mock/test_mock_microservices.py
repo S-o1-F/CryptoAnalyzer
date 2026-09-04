@@ -9,12 +9,11 @@ sys.path.insert(0, os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../..')))
 
 
-# ─────────────────────────────────────────
-# ANALYSIS SERVICE TESTS
-# ─────────────────────────────────────────
+
+#za analysis service
 
 def test_analysis_service_returns_data():
-    """Happy path — analysis service responds correctly"""
+    #analysis service responds correctly
 
     fake_response = MagicMock()
     fake_response.status_code = 200
@@ -35,7 +34,7 @@ def test_analysis_service_returns_data():
 
 
 def test_analysis_service_unavailable():
-    """Test 503 when analysis service is not running"""
+    #Test 503 when analysis service is not running
 
     import api
     with patch.object(api.requests, "get") as mock_get:
@@ -49,7 +48,7 @@ def test_analysis_service_unavailable():
 
 
 def test_analysis_service_timeout():
-    """Test 504 when analysis service times out"""
+    #Test 504 when analysis service times out
 
     import api
     with patch.object(api.requests, "get") as mock_get:
@@ -62,12 +61,10 @@ def test_analysis_service_timeout():
         assert "timed out" in error.value.detail.lower()
 
 
-# ─────────────────────────────────────────
-# SENTIMENT SERVICE TESTS
-# ─────────────────────────────────────────
+#za sentiment service
 
 def test_sentiment_service_returns_data():
-    """Happy path — sentiment service responds correctly"""
+    #sentiment service responds correctly
 
     fake_response = MagicMock()
     fake_response.status_code = 200
@@ -88,7 +85,7 @@ def test_sentiment_service_returns_data():
 
 
 def test_sentiment_service_unavailable():
-    """Test 503 when sentiment service is not running"""
+    #test 503 when sentiment service is not running
 
     import api
     with patch.object(api.requests, "get") as mock_get:
@@ -102,7 +99,7 @@ def test_sentiment_service_unavailable():
 
 
 def test_sentiment_service_timeout():
-    """Test 504 when sentiment service times out"""
+    #Test 504 when sentiment service times out
 
     import api
     with patch.object(api.requests, "get") as mock_get:
