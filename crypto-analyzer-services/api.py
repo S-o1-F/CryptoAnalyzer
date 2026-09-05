@@ -209,9 +209,9 @@ def adx_signal(adx, plus_di, minus_di):
     """ADX > 25 with +DI > -DI = BUY, +DI < -DI = SELL"""
     if pd.isna(adx) or pd.isna(plus_di) or pd.isna(minus_di):
         return "HOLD"
-        if adx > 25:
-            if plus_di > minus_di:
-                return "BUY"
+    if adx > 25:
+        if plus_di > minus_di:
+            return "BUY"
         elif minus_di > plus_di:
             return "SELL"
     return "HOLD"
